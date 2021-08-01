@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import requests
 import json
-# from prophet import Prophet
+from prophet import Prophet
 
 # Init
 data = requests.get('https://api.thingspeak.com/channels/196384/field/1/?results=720&timescale=20').json()
