@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+
+<head>
+    <title>Django + ThingSpeak</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="https://thingspeak.com/favicon-32x32.png" sizes="32x32">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        .fakeimg {
+            height: 200px;
+            background: #aaa;
+        }
+
+        .video-container1 {
+            position: relative;
+            padding-bottom: 56.25%;
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container1 iframe,
+        .video-container1 object,
+        .video-container1 embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="jumbotron text-center text-light" style="margin-bottom:0; position: relative; background-color: transparent;" >
+        <h1>Django + ThingSpeak</h1>
+        <p>Analisando e prevendo dados gerados por um canal do ThingSpeak com <strong>Machine Learning</strong></p>
+        <div style="
+            position: absolute;
+            z-index: -2;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            filter: blur(3px);
+            background-image: url('https://img.freepik.com/free-photo/technology-network-background_34629-304.jpg?size=626&ext=jpg');"
+        ></div>
+        
+    </div>
+
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <strong style="font-size: 20px; color: #FFF; margin-right: 5px;">
+            Autor: 
+        </strong> 
+        <a class="navbar-brand" href="https://alexalves.herokuapp.com" target="_blank">
+            José Alex Alves
+            Pereira
+        </a>
+    </nav>
+
+    <div class="container" style="margin-top:30px; width: 100%; max-width: 100%;">
+        <div class="row">
+            <div class="col-sm-4">
+                <h2>Software utilizado</h2>
+                <h5>ThingSpeak</h5>
+                <div style="width: 100%; display: flex; position: relative; margin-bottom: 18px;">
+                    <img style="width: 100%;"
+                        src="https://hackster.imgix.net/uploads/attachments/1218432/_Higfry4cVs.blob?auto=compress&w=900&h=675&fit=min&fm=jpg"
+                        alt="ThingSpeak logo">
+                    <p style="position: absolute; bottom: 0; padding: 8px; font-size: 12px;" class="text-light">API de
+                        Internet das Coisas de código aberto para armazenar e recuperar dados de itens usando o
+                        protocolo HTTP e MQTT pela Internet ou por meio de uma rede local.</p>
+                </div>
+                <h3>TWS#2 v2.21</h3>
+                <p>Canal do ThingSpeak utilizado
+                    <a href="https://thingspeak.com/channels/196384" target="_blank">
+                        <strong>196384</strong>.
+                    </a>
+                </p>
+
+                <hr class="d-sm-none">
+            </div>
+            <div class="col-sm-8">
+
+                <div class="card">
+                    <div class="card-header bg-primary text-light">
+                        <strong>
+                            Field 1 Chart
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0; margin: 0;">
+                            <div id="field_1" style="width: 100%; height: 300px"></div>
+                        </div>
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0; margin: 0;">
+                            <div id="field_1_deviation" style="width: 100%; height: 300px"></div>
+                        </div>
+                        <h4>Temperatura atual: <span class="text-primary" id="temperature_field_1"></span></h4>
+                        <h4>Média atual: <span class="text-primary" id="average_field_1"></span></h4>
+                        <h4>Desvio padrão atual: <span class="text-primary" id="deviation_field_1"></span></h4>
+                        <p>Valores atualizados a cada 5 minutos na api do ThingSpeak.</p>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header bg-primary text-light">
+                        <strong>
+                            Field 2 Chart
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0; margin: 0;">
+                            <div id="field_2" style="width: 100%; height: 300px"></div>
+                        </div>
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0; margin: 0;">
+                            <div id="field_2_deviation" style="width: 100%; height: 300px"></div>
+                        </div>
+                        <h4>Temperatura atual: <span class="text-primary" id="temperature_field_2"></span></h4>
+                        <h4>Média atual: <span class="text-primary" id="average_field_2"></span></h4>
+                        <h4>Desvio padrão atual: <span class="text-primary" id="deviation_field_2"></span></h4>
+                        <p>Valores atualizados a cada 5 minutos na api do ThingSpeak.</p>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header bg-primary text-light">
+                        <strong>
+                            Field 3 Chart
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0; margin: 0;">
+                            <div id="field_3" style="width: 100%; height: 300px"></div>
+                        </div>
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0; margin: 0;">
+                            <div id="field_3_deviation" style="width: 100%; height: 300px"></div>
+                        </div>
+                        <h4>Pressão atual: <span class="text-primary" id="temperature_field_3"></span></h4>
+                        <h4>Média atual: <span class="text-primary" id="average_field_3"></span></h4>
+                        <h4>Desvio padrão atual: <span class="text-primary" id="deviation_field_3"></span></h4>
+                        <p>Valores atualizados a cada 5 minutos na api do ThingSpeak.</p>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header bg-primary text-light">
+                        <strong>
+                            Field 4 Chart
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0; margin: 0;">
+                            <div id="field_4" style="width: 100%; height: 300px"></div>
+                        </div>
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0; margin: 0;">
+                            <div id="field_4_deviation" style="width: 100%; height: 300px"></div>
+                        </div>
+                        <h4>Humidade atual: <span class="text-primary" id="temperature_field_4"></span></h4>
+                        <h4>Média atual: <span class="text-primary" id="average_field_4"></span></h4>
+                        <h4>Desvio padrão atual: <span class="text-primary" id="deviation_field_4"></span></h4>
+                        <p>Valores atualizados a cada 5 minutos na api do ThingSpeak.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron text-center" style="margin-bottom:0; margin-top: 8px;">
+        <p>Copyright © 2021. Template Criado por 
+            <a href="https://alexalves.herokuapp.com" target="_blank">
+                Alex Alves
+            </a>
+        </p>
+    </div>
+
+</body>
+
+</html>
