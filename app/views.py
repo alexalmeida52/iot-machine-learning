@@ -31,7 +31,7 @@ def init(field_number):
     model.fit(df)
 
     future = list()
-    now = datetime.now() + timedelta(hours=3) + timedelta(minutes=5)
+    now = datetime.now() + timedelta(minutes=5)
     for i in range(6):
         current_time = now.strftime("%Y-%m-%d %H:%M")
         future.append([current_time])
