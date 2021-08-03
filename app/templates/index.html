@@ -202,7 +202,7 @@
         setTimeout(async () => {
             const response = await pullDataPredict('data');
             drawChartPredict(1, response);
-            console.log((response.map(elm => ([moment(elm.ds).add(3, 'h').toDate(), elm.yhat]))))
+            console.log((response.map(elm => ([moment(elm.ds).toDate(), elm.yhat]))))
         }, 1000);
 
         setInterval(async () => {
