@@ -66,6 +66,6 @@ def set_interval(func, sec):
     return t
 
 init()
-set_interval(init, 60)
+set_interval(init, 5*60)
 def home(request):
     return render(request, 'index.html', test)
