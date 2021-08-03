@@ -7,7 +7,7 @@ const FIELD_NUMBER_4 = 4;
 // Exutando funções quando a tela carregar
 window.onload = function() {
     // Aguardar enquanto libs são carregadas
-    google.charts.load('current', {'packages':['corechart', 'scatter']});
+    google.charts.load('current', {'packages':['corechart', 'scatter', 'line']});
     setTimeout(() => {
         drawChart(FIELD_NUMBER_1);
         drawChart(FIELD_NUMBER_1, true);
@@ -44,7 +44,7 @@ function pullData(data) {
 // Formatando resposta da api do ThingSpeak
 function formatResponseFromApi(data, field, deviation) {
     const dataFormat = data.feeds.map((elm, i) => {
-        console.log(Number(calcStandardDeviation(data.feeds.map(elm => Number(elm[field])).splice(0, i+1))));
+        // console.log(Number(calcStandardDeviation(data.feeds.map(elm => Number(elm[field])).splice(0, i+1))));
         if(deviation) {
             return [
                 new Date(elm.created_at),
@@ -114,7 +114,7 @@ async function drawChart(field_number, deviation) {
     document.getElementById(`deviation_field_${field_number}`).innerHTML = Number(standardDeviation.toFixed(2));
     document.getElementById(`average_field_${field_number}`).innerHTML = Number(average.toFixed(2));
     
-    console.log(document.getElementById(`deviation_field_${field_number}`));
+    // console.log(document.getElementById(`deviation_field_${field_number}`));
 }    
 
 function getInfoFields(field_number) {
