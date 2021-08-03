@@ -215,7 +215,7 @@
             return new Promise((resolve, reject) => {
                 fetch(`/static/${name}.json`)
                     .then(response => response.json())
-                    .then(json => resolve(json.map(elm => ([moment(elm.ds).add(3, 'h').toDate(), elm.yhat]))))
+                    .then(json => resolve(json.map(elm => ([moment(elm.ds).toDate(), elm.yhat]))))
             })
         }
         
