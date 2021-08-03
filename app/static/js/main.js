@@ -44,7 +44,7 @@ function pullData(data) {
 // Formatando resposta da api do ThingSpeak
 function formatResponseFromApi(data, field, deviation) {
     const dataFormat = data.feeds.map((elm, i) => {
-        // console.log(Number(calcStandardDeviation(data.feeds.map(elm => Number(elm[field])).splice(0, i+1))));
+        
         if(deviation) {
             return [
                 new Date(elm.created_at),
@@ -106,7 +106,7 @@ async function drawChart(field_number, deviation) {
     chart.draw(data, google.charts.Scatter.convertOptions(options));
 
     let listOfValues = getListOfValues(response, `field${field_number}`);
-    // console.log(listOfValues)
+    
     let temperature = listOfValues[listOfValues.length - 1];
     let standardDeviation = calcStandardDeviation(listOfValues);
     let average = calcAverage(listOfValues);
@@ -114,7 +114,6 @@ async function drawChart(field_number, deviation) {
     document.getElementById(`deviation_field_${field_number}`).innerHTML = Number(standardDeviation.toFixed(2));
     document.getElementById(`average_field_${field_number}`).innerHTML = Number(average.toFixed(2));
     
-    // console.log(document.getElementById(`deviation_field_${field_number}`));
 }    
 
 function getInfoFields(field_number) {

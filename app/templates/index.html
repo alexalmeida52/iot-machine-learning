@@ -208,8 +208,7 @@
         setTimeout(async () => {
             const response_1 = await pullDataPredict('field1');
             const response_2 = await pullDataPredict('field2');
-            console.log(Number(response_1[0][1].toFixed(2)));
-            console.log(Number(response_2[0][1].toFixed(2)));
+            
             document.getElementById(`predict_field_1`).innerHTML = Number(response_1[0][1].toFixed(2));
             document.getElementById(`predict_field_2`).innerHTML = Number(response_2[0][1].toFixed(2));
             drawChartPredict(1, response_1);
@@ -226,7 +225,8 @@
             drawChartPredict(1, response_1);
             drawChartPredict(2, response_2);
             console.log('dados atualizados', moment().format("DD/MM/YYYY HH:mm"));
-            console.log(response_1, response_2)
+            console.log((response_1))
+            console.log((response_2))
         }, (5*MINUTO)+5000);
 
         function pullDataPredict(name) {

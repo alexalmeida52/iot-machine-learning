@@ -11,7 +11,6 @@ from datetime import timedelta
 import threading
 
 # Init
-test = {}
 
 def init(field_number):
     print('Init')
