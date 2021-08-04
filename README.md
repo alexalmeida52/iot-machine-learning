@@ -1,4 +1,8 @@
 # iot-machine-learning
+### Autores:
+  - José Alex Alves Pereira
+  - Fabricio Cruz Da Costa
+
 Pequeno projeto para análise de dados coletados por um canal do ThinkSpeak. São analisados  dados de temperatura, pressão e humidade a partir de um dispositivo IoT. Os dados são processados e convertidos em gráficos de variação, média e previsões de valores futuros.
 
 Projeto disponível online no seguinte link:
